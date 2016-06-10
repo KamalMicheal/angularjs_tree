@@ -1,0 +1,14 @@
+<tree-tag></tree-tag>
+
+<script type="text/ng-template" id="Node">
+  <li>{{name}}</li>
+</script>
+
+<script type="text/ng-template" id="Tree">
+  <ul>
+    <node-tag ng-repeat="dataItem in getParents()" id="{{dataItem.id}}" name="{{dataItem.name}}"
+              children-count="{{dataItem.childrenCount}}"></node-tag>
+    <node-tag ng-repeat="dataItem in getLeaf()" id="{{dataItem.id}}" name="{{dataItem.name}}"
+              children-count="{{dataItem.childrenCount}}"></node-tag>
+  </ul>
+</script>
