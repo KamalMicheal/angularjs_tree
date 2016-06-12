@@ -1,6 +1,14 @@
 var homeApp = angular.module("HomeApp", []);
 
-homeApp.directive("treeTag", function () {
+var closedIcon = '/arrow_closed.png';
+var openIcon = '/arrow_open.png';
+var nodeIcon = '/node.png';
+
+var heCtrl = homeApp.controller("heCtrl", function($scope) {
+    $scope.heID = "1";
+});
+
+heCtrl.directive("treeTag", function () {
         return {
             restrict: 'E',
             scope: {},
@@ -51,17 +59,48 @@ homeApp.directive("treeTag", function () {
         };
     });
 
-homeApp.directive("nodeTag", function() {
-       return {
-           restrict: 'E',
-           scope: {
-               id: '@',
-               name: '@',
-               childrenCount: '@'
-           },
-           templateUrl: 'Node',
-           controller: function($scope, $log) {
-               $log.log($scope);
-           }
-       }
-    });
+heCtrl.directive("nodeTag", function() {
+    return {
+        restrict: 'E',
+        scope: {
+            id: '@',
+            name: '@',
+            childrenCount: '@',
+            isClosed: '='
+        },
+        templateUrl: 'Node',
+        controller: function ($scope, $log, $window) {
+            if ($scope.childrenCount > 0)
+                $scope.nodeIcon = $window.closedIcon;
+            else
+                $scope.nodeIcon = $window.nodeIcon;
+
+            $scope.toggleNode = function () {
+                if ($scope.isClosed) {
+                    $scope.isClosed = false;
+                    $scope.expand();
+                } else {
+                    $scope.isClosed = true;
+                    $scope.collapse();
+                }
+            };
+
+            $scope.isParent = function() {
+                return($scope.childrenCount > 0);
+            };
+
+            $scope.expand = function() {
+                if ($scope.isParent()) {
+                    $scope.nodeIcon = $window.openIcon;
+                    $log.log($scope.$parent.$parent.$parent.heID);
+                }
+            };
+
+            $scope.collapse = function() {
+                if ($scope.isParent()) {
+                    $scope.nodeIcon = $window.closedIcon;
+                }
+            };
+        }
+    }
+});

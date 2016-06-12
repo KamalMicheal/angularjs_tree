@@ -1,14 +1,47 @@
+<div ng-controller="heCtrl">
+  <select ng-model="heID">
+    <option value="0">First Option</option>
+    <option value="1">Second Option</option>
+  </select>
+
+
+
 <tree-tag></tree-tag>
 
+</div>
+
+<style>
+  .parent_node {
+    list-style: none;
+    cursor: pointer
+  }
+  .child_node {
+    list-style: none;
+    cursor: pointer
+  }
+</style>
+
 <script type="text/ng-template" id="Node">
-  <li>{{name}}</li>
+  <li>
+    <img ng-src="{{nodeIcon}}" ng-click="toggleNode()">
+    {{name}}
+  </li>
+</script>
+
+<script type="text/ng-template" id="leafNode">
+  <li>
+    <img ng-src="{{nodeIcon}}">
+    {{name}}
+  </li>
 </script>
 
 <script type="text/ng-template" id="Tree">
   <ul>
-    <node-tag ng-repeat="dataItem in getParents()" id="{{dataItem.id}}" name="{{dataItem.name}}"
-              children-count="{{dataItem.childrenCount}}"></node-tag>
-    <node-tag ng-repeat="dataItem in getLeaf()" id="{{dataItem.id}}" name="{{dataItem.name}}"
+    <node-tag class="parent_node" ng-repeat="dataItem in getParents()"
+              id="{{dataItem.id}}" name="{{dataItem.name}}"
+              children-count="{{dataItem.childrenCount}}" is-closed="true"></node-tag>
+    <node-tag class="child_node" ng-repeat="dataItem in getLeaf()"
+              id="{{dataItem.id}}" name="{{dataItem.name}}"
               children-count="{{dataItem.childrenCount}}"></node-tag>
   </ul>
 </script>
